@@ -37,7 +37,7 @@ public class SpiralIterator implements Iterator<Character> {
 					iter.cursor[1]++;
 				} else {
 					iter.fromTop++;
-					if (iter.hasNext()) {
+					if (iter.hasMoreRows()) {
 						iter.direction = Direction.DOWN;
 						iter.direction.step(iter);
 					}
@@ -52,7 +52,7 @@ public class SpiralIterator implements Iterator<Character> {
 					iter.cursor[0]++;
 				} else {
 					iter.fromRight++;
-					if (iter.hasNext()) {
+					if (iter.hasMoreColumns()) {
 						iter.direction = Direction.LEFT;
 						iter.direction.step(iter);
 					}
@@ -67,7 +67,7 @@ public class SpiralIterator implements Iterator<Character> {
 					iter.cursor[1]--;
 				} else {
 					iter.fromBottom++;
-					if (iter.hasNext()) {
+					if (iter.hasMoreRows()) {
 						iter.direction = Direction.UP;
 						iter.direction.step(iter);
 					}
@@ -82,7 +82,7 @@ public class SpiralIterator implements Iterator<Character> {
 					iter.cursor[0]--;
 				} else {
 					iter.fromLeft++;
-					if (iter.hasNext()) {
+					if (iter.hasMoreColumns()) {
 						iter.direction = Direction.RIGHT;
 						iter.direction.step(iter);
 					}
@@ -117,10 +117,17 @@ public class SpiralIterator implements Iterator<Character> {
 		return SpiralIterator.deepClone2DArray(this.matrix);
 	}
 
+	boolean hasMoreRows() {
+		return this.fromTop + this.fromBottom < this.length;
+	}
+
+	boolean hasMoreColumns() {
+		return this.fromLeft + this.fromRight < this.width;
+	}
+
 	@Override
 	public boolean hasNext() {
-		return this.fromTop + this.fromBottom != this.length
-				&& this.fromLeft + this.fromRight != this.width;
+		return this.hasMoreRows() && this.hasMoreColumns();
 	}
 
 	@Override
